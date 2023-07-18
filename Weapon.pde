@@ -17,6 +17,7 @@ class Weapon
     rotateX(-HALF_PI);
     rotateY(HALF_PI);
     fill(#A0A0A0);
+    stroke(150);
     triangle(-1,0,1,0,0,25);
     pop();
     

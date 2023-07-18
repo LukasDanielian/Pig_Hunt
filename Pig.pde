@@ -9,6 +9,7 @@ class Pig implements Object
   {
     this.chunk = chunk;
     pig = loadShape("pig.obj");
+    pig.setFill(color(#B261A3));
     pig.scale(25);
     pig.setFill(color(#B261A3));
     pig.translate(25, -20, -10);

@@ -32,8 +32,15 @@ class Chunk
       noiseZ += noiseScl;
     }
 
+    //Add items randomly
     objects.add(new Rock(this.x, this.z, this));
     objects.add(new Pig(this.x, this.z, this));
+    
+    if((int)random(0,5) == 0)
+      objects.add(new Cactus(this.x,this.z,this));
+      
+    if(int(random(0,10)) == 0)
+      objects.add(new Tower(this.x,this.z,this));
   }
 
   //Draws everything in chunk

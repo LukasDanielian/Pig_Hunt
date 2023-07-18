@@ -3,11 +3,12 @@ void renderHUD()
 {
   push();
   camera();
+  ortho();
   hint(DISABLE_DEPTH_TEST);
   fill(0);
   textSize(15);
   textAlign(LEFT,CENTER);
-  text("Frame Rate: " + frameRate,width/2,-height/10);
+  text("Frame Rate: " + frameRate,width/2,height * .05);
   textAlign(CENTER);
   
   

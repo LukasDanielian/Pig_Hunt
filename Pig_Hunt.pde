@@ -19,7 +19,6 @@ void setup()
   imageMode(CENTER);
   frameRate(60);
   textSize(128);
-  perspective(PI/2.5, float(width)/height, .01, width * width);
 
   r=(GLWindow)surface.getNative();
   keys = new boolean[256];
@@ -35,31 +34,21 @@ void draw()
   if (loading)
   {
     background(0);
-    text("Danielian Softworks®", width/2, height * .01);
+    text("Danielian Softworks®", width/2, height * .1);
     fill(255);
-    for(float i = 0; i < TWO_PI; i+= PI/6)
+    for (float i = 0; i < TWO_PI; i+= PI/6)
       circle(width/2 + sin(-frameCount * .05 + i) * 100, height/2 + cos(-frameCount * .05 + i) * 100, 15);
-  } 
-  
+  }
+
   //Game
   else
   {
     background(#16819D);
     lights();
-    directionalLight(196,123,76,.75,1,.75);
+    directionalLight(196, 123, 76, .75, 1, .75);
 
     player.move();
     world.render();
     renderHUD();
   }
-}
-
-//Loads in diff thread
-void loadEverything()
-{
-  loadShape("rock.obj");
-  loadShape("pig.obj");
-  player = new Player();
-  world = new World();
-  loading = false;
 }

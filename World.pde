@@ -18,28 +18,44 @@ class World
       Chunk chunk = chunks.get(cordString(player.chunkX + HORIZ_DISP[i], player.chunkZ + DEPTH_DISP[i]));
       chunk.render();
     }
+
+    //Sun
+    push();
+    translate(player.pos.x - width, -width * 2, player.pos.z - width);
+    noLights();
+    noStroke();
+    fill(#FFEA00);
+    rotateX(HALF_PI);
+    circle(0, 0, width/4);
+    lights();
+    pop();
   }
 
   //resets center chunk and adds new chunks if needed
   void updateChunks()
   {
-    for (int i = 0; i < DEPTH_DISP.length; i++)
+    synchronized(chunks)
     {
-      Chunk chunk = chunks.get(cordString(player.chunkX + HORIZ_DISP[i], player.chunkZ + DEPTH_DISP[i]));
-
-      //brand new chunk
-      if (chunk == null)
+      for (int i = 0; i < DEPTH_DISP.length; i++)
       {
-        chunk = new Chunk(player.chunkX + HORIZ_DISP[i], player.chunkZ + DEPTH_DISP[i]);
-        chunks.put(cordString(player.chunkX + HORIZ_DISP[i], player.chunkZ + DEPTH_DISP[i]), chunk);
+        Chunk chunk = chunks.get(cordString(player.chunkX + HORIZ_DISP[i], player.chunkZ + DEPTH_DISP[i]));
+
+        //brand new chunk
+        if (chunk == null)
+        {
+          chunk = new Chunk(player.chunkX + HORIZ_DISP[i], player.chunkZ + DEPTH_DISP[i]);
+          chunks.put(cordString(player.chunkX + HORIZ_DISP[i], player.chunkZ + DEPTH_DISP[i]), chunk);
+        }
       }
     }
+
+    thread("loadNextChunks");
   }
-  
+
   //returns current chunk of player
   Chunk getCurrentChunk()
   {
-    return chunks.get(cordString(player.chunkX,player.chunkZ));
+    return chunks.get(cordString(player.chunkX, player.chunkZ));
   }
 
   //formats into string for hash map
