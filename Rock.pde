@@ -25,6 +25,9 @@ class Rock implements Object
     rotateZ(rot.x);
     shape(rock);
     pop();
+    
+    if(dist(player.pos.x,player.pos.y,player.pos.z,pos.x,pos.y,pos.z) < rock.width * .75)
+      player.pos = PVector.add(pos, player.pos.sub(pos).copy().normalize().mult(rock.width * .75));
   }
   
   PVector getPos()
@@ -34,7 +37,7 @@ class Rock implements Object
   
   float getSize()
   {
-    return rock.width;
+    return 0;
   }
   
   int getColor()

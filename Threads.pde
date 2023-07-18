@@ -7,7 +7,6 @@ void loadEverything()
   loadShape("tower.obj");
   player = new Player();
   world = new World();
-  loading = false;
 }
 
 //Loads all next possible chunks in thread to avoid lag
@@ -16,18 +15,21 @@ void loadNextChunks()
   int[] DEPTH_DISP = {0, 1, 2, 2, 2, 2, 2, 1, 0, -1, -2, -2, -2, -2, -2, -1};
   int[] HORIZ_DISP = {-2, -2, -2, -1, 0, 1, 2, 2, 2, 2, 2, 1, 0, -1, -2, -2};
 
-  synchronized(world.chunks)
+  for (int i = 0; i < DEPTH_DISP.length; i++)
   {
-    for (int i = 0; i < DEPTH_DISP.length; i++)
-    {
-      Chunk chunk = world.chunks.get(world.cordString(player.chunkX + HORIZ_DISP[i], player.chunkZ + DEPTH_DISP[i]));
+    Chunk chunk = world.chunks.get(world.cordString(player.chunkX + HORIZ_DISP[i], player.chunkZ + DEPTH_DISP[i]));
 
-      //brand new chunk
-      if (chunk == null)
+    //brand new chunk
+    if (chunk == null)
+    {
+      chunk = new Chunk(player.chunkX + HORIZ_DISP[i], player.chunkZ + DEPTH_DISP[i]);
+      
+      synchronized(player)
       {
-        chunk = new Chunk(player.chunkX + HORIZ_DISP[i], player.chunkZ + DEPTH_DISP[i]);
         world.chunks.put(world.cordString(player.chunkX + HORIZ_DISP[i], player.chunkZ + DEPTH_DISP[i]), chunk);
       }
     }
   }
+  
+  loading = false;
 }

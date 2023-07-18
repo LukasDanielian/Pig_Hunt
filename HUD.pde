@@ -11,7 +11,6 @@ void renderHUD()
   text("Frame Rate: " + frameRate,width/2,height * .05);
   textAlign(CENTER);
   
-  
   noStroke();
   fill(0);
   rect(width/2,height/2,25,2);

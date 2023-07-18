@@ -15,8 +15,11 @@ class World
   {
     for (int i = 0; i < DEPTH_DISP.length; i++)
     {
-      Chunk chunk = chunks.get(cordString(player.chunkX + HORIZ_DISP[i], player.chunkZ + DEPTH_DISP[i]));
-      chunk.render();
+      synchronized(player)
+      {
+        Chunk chunk = chunks.get(cordString(player.chunkX + HORIZ_DISP[i], player.chunkZ + DEPTH_DISP[i]));
+        chunk.render();
+      }
     }
 
     //Sun
@@ -34,16 +37,17 @@ class World
   //resets center chunk and adds new chunks if needed
   void updateChunks()
   {
-    synchronized(chunks)
+    for (int i = 0; i < DEPTH_DISP.length; i++)
     {
-      for (int i = 0; i < DEPTH_DISP.length; i++)
-      {
-        Chunk chunk = chunks.get(cordString(player.chunkX + HORIZ_DISP[i], player.chunkZ + DEPTH_DISP[i]));
+      Chunk chunk = chunks.get(cordString(player.chunkX + HORIZ_DISP[i], player.chunkZ + DEPTH_DISP[i]));
 
-        //brand new chunk
-        if (chunk == null)
+      //brand new chunk
+      if (chunk == null)
+      {
+        chunk = new Chunk(player.chunkX + HORIZ_DISP[i], player.chunkZ + DEPTH_DISP[i]);
+        
+        synchronized(player)
         {
-          chunk = new Chunk(player.chunkX + HORIZ_DISP[i], player.chunkZ + DEPTH_DISP[i]);
           chunks.put(cordString(player.chunkX + HORIZ_DISP[i], player.chunkZ + DEPTH_DISP[i]), chunk);
         }
       }
